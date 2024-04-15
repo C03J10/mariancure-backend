@@ -9,7 +9,7 @@ import crud
 
 FeedbacksRouter = APIRouter(tags=["Feedbacks"])
 
-@FeedbacksRouter.post("/addfeedback", response_model=ConcernGet)
+@FeedbacksRouter.post("/add_feedback", response_model=ConcernGet)
 async def add_feedback(feedback: FeedbackCreate, db: Session = Depends(get_db)):
     feedback = crud.create_feedback(db, feedback)
     return feedback

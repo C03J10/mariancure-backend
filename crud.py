@@ -105,6 +105,38 @@ def get_all_concerns(db:Session):
         models.Concern.feedback_added, isouter=True).join(
         models.Feedback.pharmacist, isouter=True).all()
 
+def get_all_concerns_with_feedback(db:Session):
+     return db.query(
+        models.Concern.name,
+        models.Concern.contact_number,
+        models.Concern.gender,
+        models.Concern.height,
+        models.Concern.weight,
+        models.Concern.age,
+        models.Concern.is_pregnant,
+        models.Concern.does_breastfeed,
+        models.Concern.does_drink_alcohol,
+        models.Concern.does_smoke,
+        models.Concern.number_of_packs_yearly,
+        models.Concern.chief_complaint_content,
+        models.Concern.family_history_content,
+        models.Concern.allergy_history_content,
+        models.Concern.previous_medication,
+        models.Concern.current_medication,
+        models.Concern.user_id,
+        models.Concern.concern_id,
+        models.Concern.date_concern_submitted,
+        models.Feedback.feedback_id,
+        models.Pharmacist.pharmacist_id,
+        models.Pharmacist.pharmacist_name,
+        models.Feedback.assessment_content,
+        models.Feedback.plan_content,
+        models.Feedback.date_feedback_submitted
+        ).join(
+        models.Concern.feedback_added).join(
+        models.Feedback.pharmacist).all()
+    
+        
 def get_concern(db:Session, concern_id: int):
     return db.query(
         models.Concern.name,
