@@ -10,7 +10,8 @@ app = FastAPI()
 
 origins = [
     "http://localhost:5173",
-    "http://172.16.0.189:5173/"
+    "http://172.16.0.189:5173/",
+    "https://mariancure.netlify.app"
 ]
 
 app.add_middleware(
