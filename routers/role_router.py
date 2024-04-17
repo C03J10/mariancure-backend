@@ -11,7 +11,7 @@ RolesRouter = APIRouter(tags=["Roles"])
 
 @RolesRouter.get("/roles/", response_model=list[RoleGet])
 async def get_roles(db: Session = Depends(get_db)):
-    roles = crud.get_roles(db)
+    roles = crud.get_all_roles(db)
     return roles
 
 @RolesRouter.get("/roles/{role}", response_model=RoleGet)
