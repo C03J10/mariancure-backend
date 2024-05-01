@@ -43,6 +43,18 @@ def get_user(db:Session, user_id: int):
         models.User.pharmacist_details, isouter=True).filter(
         models.User.user_id == user_id).first()
 
+def get_user_by_username(db:Session, username: str):
+    return db.query(
+        models.User.username,
+        models.User.user_id,        
+        models.Role.role_id,
+        models.Role.role_name,
+        models.Pharmacist.pharmacist_id,
+        models.Pharmacist.pharmacist_name,).join(
+        models.User.role_assigned, isouter=True).join(
+        models.User.pharmacist_details, isouter=True).filter(
+        models.User.username == username).first()
+    
 def get_user_by_login(db:Session, username: str, password: str):
     user = db.query(models.User).filter(
         models.User.username == username).first()
