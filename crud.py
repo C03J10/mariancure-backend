@@ -74,6 +74,16 @@ def create_user(db:Session, user:schemas.UserCreate):
 
     return get_user(db, add_user.user_id)
 
+def update_password(db:Session, username:str, password: str):
+    user = db.query(models.User).filter(models.User.username == username).first()
+
+    setattr(user, "password", hash_password(password))
+
+    db.commit()
+
+    return get_user(db, user.user_id)
+    
+
 def get_all_concerns(db:Session):
      return db.query(
         models.Concern.name,
@@ -136,7 +146,6 @@ def get_all_concerns_with_feedback(db:Session):
         models.Concern.feedback_added).join(
         models.Feedback.pharmacist).all()
     
-        
 def get_concern(db:Session, concern_id: int):
     return db.query(
         models.Concern.name,
@@ -255,24 +264,3 @@ def hash_password(password: str):
 def compare_password(password: str, comp_password: str):
     return bcrypt.checkpw(password.encode('utf-8'), comp_password.encode('utf-8'))
 
-
-#return db.query(
-# models.Concern.name,
-# models.Concern.contact_number,
-# models.Concern.gender,
-# models.Concern.height,
-# models.Concern.weight,
-# models.Concern.age,
-# models.Concern.is_pregnant,
-# models.Concern.does_breastfeed,
-# models.Concern.does_drink_alcohol,
-# models.Concern.does_smoke,
-# models.Concern.number_of_packs_yearly,
-# models.Concern.chief_complaint_content,
-# models.Concern.family_history_content,
-# models.Concern.allergy_history_content,
-# models.Concern.previous_medication,
-# models.Concern.current_medication,
-# models.Concern.user_id,
-# models.Concern.concern_id,
-# models.Concern.date_submitted, 

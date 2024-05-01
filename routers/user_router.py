@@ -28,6 +28,13 @@ async def add_user(user: UserCreate, db:Session = Depends(get_db)):
         return user
     return None
 
+@UsersRouter.put("/update_password", response_model=UserGet)
+async def update_user_password(db:Session = Depends(get_db), username=str, password=str):
+    user = crud.update_password(db, username, password)
+    if user:
+        return user
+    return None
+
 @UsersRouter.get("/login", response_model=UserGet)
 async def get_user(db:Session = Depends(get_db), username=str, password=str):
     user = crud.get_user_by_login(db, username, password)
