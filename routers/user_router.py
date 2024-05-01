@@ -21,7 +21,7 @@ async def get_user(db:Session = Depends(get_db), user_id=int):
         return user
     raise HTTPException(status_code=404, detail="User not found")
 
-@UsersRouter.get("/users/{username}", response_model=UserGet)
+@UsersRouter.get("/get_username", response_model=UserGet)
 async def get_user_by_username(db:Session = Depends(get_db), username=str):
     user = crud.get_user_by_username(db, username)
     if user:
