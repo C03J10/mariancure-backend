@@ -6,23 +6,15 @@ import datetime
 class RoleBase(BaseModel):
     role_name: str
 
-class RoleCreate(RoleBase):
-    pass
-
 class RoleGet(RoleBase):
     role_id: int
 
-class PharmacistBase(BaseModel):
-    pharmacist_name: str
-
-class PharmacistGet(PharmacistBase):
-    pharmacist_id: int
-
 class UserBase(BaseModel):
     username: str
+    full_name: str
+    email_address: str
 
 class UserCreate(UserBase):
-    full_name: str
     role_name: str
     password: str
 
@@ -30,8 +22,6 @@ class UserGet(UserBase):
     user_id: int
     role_id: int
     role_name: str 
-    pharmacist_id: Optional[int]
-    pharmacist_name: Optional[str]
 
 class ConcernBase(BaseModel):
     name: str
@@ -48,6 +38,7 @@ class ConcernBase(BaseModel):
     chief_complaint_content: str
     family_history_content: str
     allergy_history_content:str
+    patient_history_content: str
     previous_medication: Optional[str]
     current_medication: str
 
@@ -57,12 +48,12 @@ class ConcernCreate(ConcernBase):
 class ConcernGet(ConcernCreate):
     concern_id: int
     date_concern_submitted: datetime.datetime
-    feedback_id: Optional[int]
-    pharmacist_id: Optional[int]
-    pharmacist_name: Optional[str]
+    assessment_id: Optional[int]
+    user_id: Optional[int]
+    full_name: Optional[str]
     assessment_content: Optional[str]
     plan_content: Optional[str]
-    date_feedback_submitted: Optional[datetime.datetime]
+    date_assessment_submitted: Optional[datetime.datetime]
 
 class FeedbackBase(BaseModel):
     assessment_content: str
@@ -70,8 +61,5 @@ class FeedbackBase(BaseModel):
 
 class FeedbackCreate(FeedbackBase):
     concern_id: int
-    pharmacist_id: int
+    user_id: int
 
-class FeedbackGet(FeedbackBase):
-    feedback_id: int
-    pharmacist: PharmacistGet

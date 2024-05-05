@@ -2,7 +2,7 @@ from fastapi import Depends, HTTPException, APIRouter, Form
 from sqlalchemy.orm import Session
 
 from database import SessionLocal, engine, get_db
-from models import Feedback
+from models import Assessment
 from schemas import FeedbackCreate, ConcernGet
 
 import crud

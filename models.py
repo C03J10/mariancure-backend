@@ -11,28 +11,20 @@ class Role(Base):
 
     users = relationship("User", back_populates="role_assigned")
 
+
 class User(Base):
     __tablename__ = "user"
 
     user_id = Column(Integer, primary_key=True, autoincrement=True)
+    full_name = Column(String)
     username = Column(String, unique=True, index=True)
+    email_address = Column(String, unique=True, index=True)
     password = Column(String)
     role_id = Column(Integer, ForeignKey(Role.role_id))
 
     role_assigned = relationship("Role", back_populates="users")
-    pharmacist_details = relationship("Pharmacist", back_populates="user_account")
+    assessment_form = relationship("Assessment", back_populates="pharmacist")
     concern_form = relationship("Concern", back_populates="patient_details")
-
-
-class Pharmacist(Base):
-    __tablename__ = "pharmacist"
-
-    pharmacist_id = Column(Integer, primary_key=True, autoincrement=True)
-    pharmacist_name = Column(String, unique=True, index=True)
-    user_id = Column(Integer, ForeignKey(User.user_id))
-
-    user_account = relationship("User", back_populates="pharmacist_details")
-    feedback_form = relationship("Feedback", back_populates="pharmacist")
 
 
 class Concern(Base):
@@ -54,24 +46,25 @@ class Concern(Base):
     chief_complaint_content = Column(String)
     family_history_content = Column(String)
     allergy_history_content = Column(String)
+    patient_history_content = Column(String)
     previous_medication = Column(String)
     current_medication = Column(String)
     date_concern_submitted = Column(DateTime)
 
     patient_details = relationship("User", back_populates="concern_form")
-    feedback_added = relationship("Feedback", back_populates="concern_based_on")
+    assessment_added = relationship("Assessment", back_populates="concern_based_on")
 
 
-class Feedback(Base):
-    __tablename__ = "feedback"
+class Assessment(Base):
+    __tablename__ = "assessment"
 
-    feedback_id = Column(Integer, primary_key=True, autoincrement=True)
+    assessment_id = Column(Integer, primary_key=True, autoincrement=True)
     concern_id = Column(Integer, ForeignKey(Concern.concern_id))
-    pharmacist_id = Column(Integer, ForeignKey(Pharmacist.pharmacist_id))
+    user_id = Column(Integer, ForeignKey(User.user_id))
     assessment_content = Column(String)
     plan_content = Column(String)
-    date_feedback_submitted = Column(DateTime)
+    date_assessment_submitted = Column(DateTime)
 
-    concern_based_on = relationship("Concern", back_populates="feedback_added")
-    pharmacist = relationship("Pharmacist", back_populates="feedback_form")
+    concern_based_on = relationship("Concern", back_populates="assessment_added")
+    pharmacist = relationship("User", back_populates="assessment_form")
 

@@ -14,16 +14,9 @@ async def get_users(db: Session = Depends(get_db)):
     users = crud.get_all_users(db)
     return users
 
-@UsersRouter.get("/users/{user_id}", response_model=UserGet)
-async def get_user(db:Session = Depends(get_db), user_id=int):
-    user = crud.get_user(db, user_id)
-    if user:
-        return user
-    raise HTTPException(status_code=404, detail="User not found")
-
-@UsersRouter.get("/get_username", response_model=UserGet)
-async def get_user_by_username(db:Session = Depends(get_db), username=str):
-    user = crud.get_user_by_username(db, username)
+@UsersRouter.get("/get_email_address", response_model=UserGet)
+async def get_user_by_email_address(db:Session = Depends(get_db), email_address=str):
+    user = crud.get_user_by_email_address(db, email_address)
     if user:
         return user
     raise HTTPException(status_code=404, detail="User not found")
@@ -36,8 +29,8 @@ async def add_user(user: UserCreate, db:Session = Depends(get_db)):
     return None
 
 @UsersRouter.put("/update_password", response_model=UserGet)
-async def update_user_password(db:Session = Depends(get_db), username=str, password=str):
-    user = crud.update_password(db, username, password)
+async def update_user_password(db:Session = Depends(get_db), email_address=str, password=str):
+    user = crud.update_password(db, email_address, password)
     if user:
         return user
     return None
