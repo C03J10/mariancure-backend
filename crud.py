@@ -68,7 +68,7 @@ def create_user(db:Session, user:schemas.UserCreate):
     return get_user(db, add_user.user_id)
 
 def update_password(db:Session, username:str, password: str):
-    user = db.query(models.User).filter(models.User.username == username).first()
+    user = db.query(models.User).filter(models.User.email_address == username).first()
 
     setattr(user, "password", hash_password(password))
 
