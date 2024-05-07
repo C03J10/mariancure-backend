@@ -32,6 +32,17 @@ def get_user(db:Session, user_id: int):
         models.User.role_assigned, isouter=True).filter(
         models.User.user_id == user_id).first()
 
+def get_user_by_username(db:Session, username: str):
+    return db.query(
+        models.User.full_name,
+        models.User.username,
+        models.User.email_address,
+        models.User.user_id,        
+        models.Role.role_id,
+        models.Role.role_name).join(
+        models.User.role_assigned, isouter=True).filter(
+        models.User.username == username).first()
+        
 def get_user_by_email_address(db:Session, email_address: str):
     return db.query(
         models.User.full_name,
@@ -109,7 +120,7 @@ def get_all_concerns(db:Session):
         models.Concern.assessment_added, isouter=True).join(
         models.Assessment.pharmacist, isouter=True).all()
 
-def get_concerns_with_feedback(db:Session):
+def get_all_concerns_of_user(db:Session, user_id: int):
      return db.query(
         models.Concern.name,
         models.Concern.contact_number,
@@ -138,9 +149,10 @@ def get_concerns_with_feedback(db:Session):
         models.Assessment.plan_content,
         models.Assessment.date_assessment_submitted
         ).join(
-        models.Concern.assessment_added).join(
-        models.Assessment.pharmacist).all()
-    
+        models.Concern.assessment_added, isouter=True).join(
+        models.Assessment.pharmacist, isouter=True).filter(
+        models.Concern.user_id == user_id).all()
+        
 def get_concern(db:Session, concern_id: int):
     return db.query(
          models.Concern.name,
@@ -174,7 +186,7 @@ def get_concern(db:Session, concern_id: int):
         models.Assessment.pharmacist, isouter=True).filter(
         models.Concern.concern_id == concern_id
         ).first()
-        
+              
 def get_concern_by_user(db:Session, user_id: int):
     return db.query(
          models.Concern.name,
@@ -208,7 +220,40 @@ def get_concern_by_user(db:Session, user_id: int):
         models.Assessment.pharmacist, isouter=True).filter(
         models.Concern.user_id == user_id
         ).first()
-        
+
+def search_concerns(db:Session, name:str):
+     return db.query(
+        models.Concern.name,
+        models.Concern.contact_number,
+        models.Concern.gender,
+        models.Concern.height,
+        models.Concern.weight,
+        models.Concern.age,
+        models.Concern.is_pregnant,
+        models.Concern.does_breastfeed,
+        models.Concern.does_drink_alcohol,
+        models.Concern.does_smoke,
+        models.Concern.number_of_packs_yearly,
+        models.Concern.chief_complaint_content,
+        models.Concern.family_history_content,
+        models.Concern.allergy_history_content,
+        models.Concern.patient_history_content,
+        models.Concern.previous_medication,
+        models.Concern.current_medication,
+        models.Concern.user_id,
+        models.Concern.concern_id,
+        models.Concern.date_concern_submitted,
+        models.Assessment.assessment_id,
+        models.User.user_id,
+        models.User.full_name,
+        models.Assessment.assessment_content,
+        models.Assessment.plan_content,
+        models.Assessment.date_assessment_submitted
+        ).join(
+        models.Concern.assessment_added, isouter=True).join(
+        models.Assessment.pharmacist, isouter=True).filter(
+        models.Concern.name.like("%"+name+"%")).all()
+
 def create_concern(db:Session, concern: schemas.ConcernCreate):
 
     add_concern = models.Concern (

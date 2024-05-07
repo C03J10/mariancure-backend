@@ -14,9 +14,9 @@ async def get_concerns(db: Session = Depends(get_db)):
     concerns = crud.get_all_concerns(db)
     return concerns
 
-@ConcernsRouter.get("/concerns_with_feedback/", response_model=list[ConcernGet])
-async def get_concerns_with_feedback(db: Session = Depends(get_db)):
-    concerns = crud.get_all_concerns_with_feedback(db)
+@ConcernsRouter.get("/concerns_of_patient/", response_model=list[ConcernGet])
+async def get_concerns_of_patient(db: Session = Depends(get_db), user_id=int):
+    concerns = crud.get_all_concerns_of_user(db, user_id)
     return concerns
 
 @ConcernsRouter.get("/concerns/{concern_id}", response_model=ConcernGet)
@@ -32,6 +32,11 @@ async def get_concern(db:Session = Depends(get_db), user_id=int):
     if concern:
         return concern
     raise HTTPException(status_code=404, detail="Concern not found")
+
+@ConcernsRouter.get("/search_concern/", response_model=list[ConcernGet])
+async def search_concern(db: Session = Depends(get_db), name=str):
+    concerns = crud.search_concerns(db, name)
+    return concerns
 
 @ConcernsRouter.post("/add_concern", response_model=ConcernGet)
 async def add_concern(concern: ConcernCreate, db:Session = Depends(get_db)):

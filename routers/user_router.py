@@ -21,6 +21,13 @@ async def get_user_by_email_address(db:Session = Depends(get_db), email_address=
         return user
     raise HTTPException(status_code=404, detail="User not found")
 
+@UsersRouter.get("/get_username", response_model=UserGet)
+async def get_user_by_username(db:Session = Depends(get_db), username=str):
+    user = crud.get_user_by_username(db, username)
+    if user:
+        return user
+    raise HTTPException(status_code=404, detail="User not found")
+
 @UsersRouter.post("/add_user", response_model=UserGet)
 async def add_user(user: UserCreate, db:Session = Depends(get_db)):
     user = crud.create_user(db, user)
