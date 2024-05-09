@@ -90,171 +90,40 @@ def update_password(db:Session, username:str, password: str):
 
 def get_all_concerns(db:Session):
      return db.query(
-        models.Concern.name,
-        models.Concern.contact_number,
-        models.Concern.gender,
-        models.Concern.height,
-        models.Concern.weight,
-        models.Concern.age,
-        models.Concern.is_pregnant,
-        models.Concern.does_breastfeed,
-        models.Concern.does_drink_alcohol,
-        models.Concern.does_smoke,
-        models.Concern.number_of_packs_yearly,
-        models.Concern.chief_complaint_content,
-        models.Concern.family_history_content,
-        models.Concern.allergy_history_content,
-        models.Concern.patient_history_content,
-        models.Concern.previous_medication,
-        models.Concern.current_medication,
-        models.Concern.user_id,
-        models.Concern.concern_id,
-        models.Concern.date_concern_submitted,
-        models.Assessment.assessment_id,
-        models.User.user_id,
-        models.User.full_name,
-        models.Assessment.assessment_content,
-        models.Assessment.plan_content,
-        models.Assessment.date_assessment_submitted
-        ).join(
-        models.Concern.assessment_added, isouter=True).join(
-        models.Assessment.pharmacist, isouter=True).all()
+        models.ConcernDetails
+        ).all()
 
 def get_all_concerns_of_user(db:Session, user_id: int):
      return db.query(
-        models.Concern.name,
-        models.Concern.contact_number,
-        models.Concern.gender,
-        models.Concern.height,
-        models.Concern.weight,
-        models.Concern.age,
-        models.Concern.is_pregnant,
-        models.Concern.does_breastfeed,
-        models.Concern.does_drink_alcohol,
-        models.Concern.does_smoke,
-        models.Concern.number_of_packs_yearly,
-        models.Concern.chief_complaint_content,
-        models.Concern.family_history_content,
-        models.Concern.allergy_history_content,
-        models.Concern.patient_history_content,
-        models.Concern.previous_medication,
-        models.Concern.current_medication,
-        models.Concern.user_id,
-        models.Concern.concern_id,
-        models.Concern.date_concern_submitted,
-        models.Assessment.assessment_id,
-        models.User.user_id,
-        models.User.full_name,
-        models.Assessment.assessment_content,
-        models.Assessment.plan_content,
-        models.Assessment.date_assessment_submitted
-        ).join(
-        models.Concern.assessment_added, isouter=True).join(
-        models.Assessment.pharmacist, isouter=True).filter(
-        models.Concern.user_id == user_id).all()
+        models.ConcernDetails).filter(
+        models.ConcernDetails.user_id == user_id).all()
         
 def get_concern(db:Session, concern_id: int):
     return db.query(
-         models.Concern.name,
-        models.Concern.contact_number,
-        models.Concern.gender,
-        models.Concern.height,
-        models.Concern.weight,
-        models.Concern.age,
-        models.Concern.is_pregnant,
-        models.Concern.does_breastfeed,
-        models.Concern.does_drink_alcohol,
-        models.Concern.does_smoke,
-        models.Concern.number_of_packs_yearly,
-        models.Concern.chief_complaint_content,
-        models.Concern.family_history_content,
-        models.Concern.allergy_history_content,
-        models.Concern.patient_history_content,
-        models.Concern.previous_medication,
-        models.Concern.current_medication,
-        models.Concern.user_id,
-        models.Concern.concern_id,
-        models.Concern.date_concern_submitted,
-        models.Assessment.assessment_id,
-        models.User.user_id,
-        models.User.full_name,
-        models.Assessment.assessment_content,
-        models.Assessment.plan_content,
-        models.Assessment.date_assessment_submitted
-        ).join(
-        models.Concern.assessment_added, isouter=True).join(
-        models.Assessment.pharmacist, isouter=True).filter(
-        models.Concern.concern_id == concern_id
+        models.ConcernDetails
+        ).filter(
+        models.ConcernDetails.concern_id == concern_id
         ).first()
               
 def get_concern_by_user(db:Session, user_id: int):
     return db.query(
-         models.Concern.name,
-        models.Concern.contact_number,
-        models.Concern.gender,
-        models.Concern.height,
-        models.Concern.weight,
-        models.Concern.age,
-        models.Concern.is_pregnant,
-        models.Concern.does_breastfeed,
-        models.Concern.does_drink_alcohol,
-        models.Concern.does_smoke,
-        models.Concern.number_of_packs_yearly,
-        models.Concern.chief_complaint_content,
-        models.Concern.family_history_content,
-        models.Concern.allergy_history_content,
-        models.Concern.patient_history_content,
-        models.Concern.previous_medication,
-        models.Concern.current_medication,
-        models.Concern.user_id,
-        models.Concern.concern_id,
-        models.Concern.date_concern_submitted,
-        models.Assessment.assessment_id,
-        models.User.user_id,
-        models.User.full_name,
-        models.Assessment.assessment_content,
-        models.Assessment.plan_content,
-        models.Assessment.date_assessment_submitted
-        ).join(
-        models.Concern.assessment_added, isouter=True).join(
-        models.Assessment.pharmacist, isouter=True).filter(
-        models.Concern.user_id == user_id
+        models.ConcernDetails).filter(
+        models.ConcernDetails.user_id == user_id
         ).first()
 
+def get_concerns_by_pharmacist(db:Session, user_id):
+    return db.query(
+        models.ConcernDetails).filter(
+        models.ConcernDetails.pharmacist_id == user_id
+        ).all()
+        
 def search_concerns(db:Session, name:str):
      return db.query(
-        models.Concern.name,
-        models.Concern.contact_number,
-        models.Concern.gender,
-        models.Concern.height,
-        models.Concern.weight,
-        models.Concern.age,
-        models.Concern.is_pregnant,
-        models.Concern.does_breastfeed,
-        models.Concern.does_drink_alcohol,
-        models.Concern.does_smoke,
-        models.Concern.number_of_packs_yearly,
-        models.Concern.chief_complaint_content,
-        models.Concern.family_history_content,
-        models.Concern.allergy_history_content,
-        models.Concern.patient_history_content,
-        models.Concern.previous_medication,
-        models.Concern.current_medication,
-        models.Concern.user_id,
-        models.Concern.concern_id,
-        models.Concern.date_concern_submitted,
-        models.Assessment.assessment_id,
-        models.User.user_id,
-        models.User.full_name,
-        models.Assessment.assessment_content,
-        models.Assessment.plan_content,
-        models.Assessment.date_assessment_submitted
-        ).join(
-        models.Concern.assessment_added, isouter=True).join(
-        models.Assessment.pharmacist, isouter=True).filter(
-        models.Concern.name.like("%"+name+"%")).all()
+         models.ConcernDetails
+        ).filter(
+        models.ConcernDetails.name.like("%"+name+"%")).all()
 
-def create_concern(db:Session, concern: schemas.ConcernCreate):
+def create_concern(db:Session, concern: schemas.ConcernBase):
 
     add_concern = models.Concern (
         user_id = concern.user_id,
@@ -280,7 +149,21 @@ def create_concern(db:Session, concern: schemas.ConcernCreate):
 
     db.add(add_concern)
     db.commit()
+    
+    role = get_role_by_name(db, "Pharmacist")
+    
+    notification = models.Notification (
+        role_id = role.role_id,
+        concern_id = add_concern.concern_id,
+        notification_type = "Add",
+        notification_content= "A new concern has been submitted.",
+        is_seen= False,
+        date_notification_created= datetime.now()
+    )
 
+    db.add(notification)
+    db.commit()
+    
     return get_concern(db, add_concern.concern_id)
 
 
@@ -297,9 +180,54 @@ def create_feedback(db:Session, feedback: schemas.FeedbackCreate):
     db.add(add_feedback)
     db.commit()
     
+    role = get_role_by_name(db, "Patient")
+    
+    notification = models.Notification (
+        role_id = role.role_id,
+        concern_id = add_feedback.concern_id,
+        notification_type = "Update",
+        notification_content= "Your concern has received feedback.",
+        is_seen= False,
+        date_notification_created= datetime.now()
+    )
+    
+    db.add(notification)
+    db.commit()
+    
     return get_concern(db, add_feedback.concern_id)
 
 
+def get_notifications_of_user (db:Session, user_id: int):
+    
+    user = get_user(db,user_id)
+    
+    if(user.role_name == "Pharmacist"):
+        return db.query(
+            models.Notification).filter(
+            models.Notification.role_id == user.role_id
+            ).all()
+            
+    return db.query(
+            models.Notification).join(
+            models.Concern.notifications_of_concern, isouter=True
+            ).filter(
+            models.Concern.user_id == user.user_id).filter(
+            models.Notification.role_id == user.role_id
+            ).all()   
+            
+def get_notification(db:Session, notification_id:int):
+    return db.query(models.Notification).filter(models.Notification.notification_id == notification_id).first()
+            
+def update_notification(db:Session, notification_id: int):
+    notification = db.query(models.Notification).filter(models.Notification.notification_id == notification_id).first()
+
+    setattr(notification, "is_seen", True)
+
+    db.commit()
+
+    return get_notification(db, notification_id)
+    
+        
 def hash_password(password: str):
     # Generate a salt and hash the password
     salt = bcrypt.gensalt()

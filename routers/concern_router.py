@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 
 from database import SessionLocal, engine, get_db
 from models import Concern
-from schemas import ConcernBase, ConcernCreate, ConcernGet
+from schemas import ConcernBase, ConcernGet
 
 import crud
 
@@ -17,6 +17,11 @@ async def get_concerns(db: Session = Depends(get_db)):
 @ConcernsRouter.get("/concerns_of_patient/", response_model=list[ConcernGet])
 async def get_concerns_of_patient(db: Session = Depends(get_db), user_id=int):
     concerns = crud.get_all_concerns_of_user(db, user_id)
+    return concerns
+
+@ConcernsRouter.get("/concerns_by_pharmacist/", response_model=list[ConcernGet])
+async def get_concerns_by_pharmacist(db: Session = Depends(get_db), user_id=int):
+    concerns = crud.get_concerns_by_pharmacist(db, user_id)
     return concerns
 
 @ConcernsRouter.get("/concerns/{concern_id}", response_model=ConcernGet)
@@ -39,6 +44,6 @@ async def search_concern(db: Session = Depends(get_db), name=str):
     return concerns
 
 @ConcernsRouter.post("/add_concern", response_model=ConcernGet)
-async def add_concern(concern: ConcernCreate, db:Session = Depends(get_db)):
+async def add_concern(concern: ConcernBase, db:Session = Depends(get_db)):
     concern = crud.create_concern(db, concern)
     return concern
